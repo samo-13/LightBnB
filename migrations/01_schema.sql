@@ -19,18 +19,19 @@ CREATE TABLE properties (
   city VARCHAR(255),
   province VARCHAR(255),
   post_code VARCHAR(255),
-  active BOOLEAN
+  active BOOLEAN,
+  FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE users (
   id SERIAL PRIMARY KEY NOT NULL,
   name VARCHAR(255) NOT NULL,
-  email VARCHAR(255),
-  password VARCHAR(255)
+  email VARCHAR(255) NOT NULL,
+  password VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE reservations (
-  id INTEGER PRIMARY KEY,
+  id SERIAL PRIMARY KEY NOT NULL,
   start_date DATE NOT NULL,
   end_date DATE NOT NULL,
   guest_id INTEGER NOT NULL,
@@ -40,7 +41,7 @@ CREATE TABLE reservations (
 );
 
 CREATE TABLE property_reviews (
-  id INTEGER PRIMARY KEY NOT NULL,
+  id SERIAL PRIMARY KEY NOT NULL,
   guest_id INTEGER,
   property_id INTEGER,
   reservation_id INTEGER,
