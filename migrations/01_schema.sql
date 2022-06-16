@@ -5,7 +5,7 @@ DROP TABLE IF EXISTS property_reviews CASCADE;
 
 CREATE TABLE properties (
   id SERIAL PRIMARY KEY NOT NULL,
-  owner_id INTEGER,
+  owner_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
   title VARCHAR(255), 
   description TEXT,
   thumbnail_photo_url VARCHAR(255),
@@ -19,8 +19,7 @@ CREATE TABLE properties (
   city VARCHAR(255),
   province VARCHAR(255),
   post_code VARCHAR(255),
-  active BOOLEAN,
-  FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE
+  active BOOLEAN
 );
 
 CREATE TABLE users (
@@ -34,20 +33,15 @@ CREATE TABLE reservations (
   id SERIAL PRIMARY KEY NOT NULL,
   start_date DATE NOT NULL,
   end_date DATE NOT NULL,
-  guest_id INTEGER NOT NULL,
-  property_id INTEGER NOT NULL,
-  FOREIGN KEY (property_id) REFERENCES properties(id) ON DELETE CASCADE,
-  FOREIGN KEY (guest_id) REFERENCES users(id) ON DELETE CASCADE
+  guest_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  property_id INTEGER REFERENCES properties(id) ON DELETE CASCADE
 );
 
 CREATE TABLE property_reviews (
   id SERIAL PRIMARY KEY NOT NULL,
-  guest_id INTEGER,
-  property_id INTEGER,
-  reservation_id INTEGER,
+  guest_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  property_id INTEGER REFERENCES properties(id) ON DELETE CASCADE,
+  reservation_id INTEGER REFERENCES reservations(id) ON DELETE CASCADE,
   rating SMALLINT,
-  message TEXT,
-  FOREIGN KEY (guest_id) REFERENCES users(id) ON DELETE CASCADE,
-  FOREIGN KEY (property_id) REFERENCES properties(id) ON DELETE CASCADE,
-  FOREIGN KEY (reservation_id) REFERENCES reservations(id) ON DELETE CASCADE
+  message TEXT
 );
