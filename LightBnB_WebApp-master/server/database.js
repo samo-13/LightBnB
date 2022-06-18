@@ -34,6 +34,11 @@ const getUserWithEmail = function(email) {
   }
   return Promise.resolve(user);
 }
+
+
+const getUserWithEmail = function(email) {
+  return 
+}
 exports.getUserWithEmail = getUserWithEmail;
 
 /**
@@ -92,7 +97,7 @@ exports.getAllReservations = getAllReservations;
 
 const getAllProperties = (options, limit = 10) => {
 
-  pool
+  return pool
     .query(
       `SELECT * FROM properties
       LIMIT $1
@@ -100,6 +105,7 @@ const getAllProperties = (options, limit = 10) => {
       [limit])
     .then((result) => {
       console.log(result.rows);
+      return result.rows;
     })
     .catch((err) => {
       console.log(err.message);
