@@ -1,3 +1,5 @@
+// SEE ORIGINAL FUNCTIONS HERE: https://github.com/lighthouse-labs/LightBnB_WebApp/blob/master/server/database.js
+
 const properties = require('./json/properties.json');
 const users = require('./json/users.json');
 const { Pool } = require('pg');
@@ -39,15 +41,15 @@ pool.connect();
 
 const getUserWithEmail = function(email) {
   return pool
-  .query(`SELECT * FROM users
-  WHERE email = $1
-  `,
-  [email])
-.then(res => 
-  res.rows[0])
-.catch((err) => {
-  console.log(err.message);
-});
+    .query(`
+    SELECT * FROM users
+    WHERE email = $1
+  `, [email])
+    .then(res =>
+      res.rows[0])
+    .catch((err) => {
+      console.log(err.message);
+    });
 };
 
 exports.getUserWithEmail = getUserWithEmail;
@@ -58,34 +60,50 @@ exports.getUserWithEmail = getUserWithEmail;
  * @return {Promise<{}>} A promise to the user.
  */
 
-// Same as getUserWithEmail 
+// Same as getUserWithEmail
 
 const getUserWithId = function(id) {
   return pool
-  .query(`SELECT * FROM users
-  WHERE id = $1
-  `,
-  [id])
-.then(res => 
-  res.rows[0])
-.catch((err) => {
-  console.log(err.message);
-});
+    .query(`
+    SELECT * FROM users
+    WHERE id = $1
+  `, [id])
+    .then(res =>
+      res.rows[0])
+    .catch((err) => {
+      console.log(err.message);
+    });
 };
 exports.getUserWithId = getUserWithId;
-
 
 /**
  * Add a new user to the database.
  * @param {{name: string, password: string, email: string}} user
  * @return {Promise<{}>} A promise to the user.
  */
+
+//  Accepts a user object that will have a name, email, and password property
+//  This function should insert the new user into the database.
+//  https://www.w3schools.com/sql/sql_insert.asp
+//  It will return a promise that resolves with the new user object. This object should contain the user's id after it's been added to the database.
+//  Add RETURNING *; to the end of an INSERT query to return the objects that were inserted. This is handy when you need the auto generated id of an object you've just added to the database.
+
+// INSERT INTO table_name (column1, column2, column3, ...)
+// VALUES (value1, value2, value3, ...);
+
 const addUser =  function(user) {
-  const userId = Object.keys(users).length + 1;
-  user.id = userId;
-  users[userId] = user;
-  return Promise.resolve(user);
-}
+  return pool
+    .query(`
+    INSERT INTO users (name, email, password)
+    VALUES ($1, $2, $3)
+    RETURNING *
+  `, [user.name, user.email, user.password])
+    .then(res =>
+      res.rows[0])
+    .catch((err) => {
+      console.log(err.message);
+    });
+};
 exports.addUser = addUser;
 
 // -------------------------------------------------------------------------------------------
@@ -99,7 +117,7 @@ exports.addUser = addUser;
  */
 const getAllReservations = function(guest_id, limit = 10) {
   return getAllProperties(null, 2);
-}
+};
 exports.getAllReservations = getAllReservations;
 
 // -------------------------------------------------------------------------------------------
@@ -114,13 +132,11 @@ exports.getAllReservations = getAllReservations;
  */
 
 const getAllProperties = (options, limit = 10) => {
-
   return pool
-    .query(
-      `SELECT * FROM properties
+    .query(`
+      SELECT * FROM properties
       LIMIT $1
-      `,
-      [limit])
+    `, [limit])
     .then((result) => {
       console.log(result.rows);
       return result.rows;
@@ -129,7 +145,6 @@ const getAllProperties = (options, limit = 10) => {
       console.log(err.message);
     });
 };
-
 exports.getAllProperties = getAllProperties;
 
 // -------------------------------------------------------------------------------------------
@@ -144,5 +159,5 @@ const addProperty = function(property) {
   property.id = propertyId;
   properties[propertyId] = property;
   return Promise.resolve(property);
-}
+};
 exports.addProperty = addProperty;
