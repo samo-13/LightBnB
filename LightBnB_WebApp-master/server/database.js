@@ -14,6 +14,7 @@ const pool = new Pool({
 pool.connect();
 // pool.query(`SELECT title FROM properties LIMIT 10;`).then(response => {console.log(response)})
 
+// -------------------------------------------------------------------------------------------
 
 /// Users
 
@@ -22,23 +23,30 @@ pool.connect();
  * @param {String} email The email of the user.
  * @return {Promise<{}>} A promise to the user.
  */
-const getUserWithEmail = function(email) {
-  let user;
-  for (const userId in users) {
-    user = users[userId];
-    if (user.email.toLowerCase() === email.toLowerCase()) {
-      break;
-    } else {
-      user = null;
-    }
-  }
-  return Promise.resolve(user);
-}
 
+// -------------------------------------------------------------------------------------------
+// REFERENCE CODE FROM BOOTCAMPX
+// pool.query(query, values)
+// .then(res => {
+//   res.rows.forEach(user => {
+//     console.log(`${user.name} has an id of ${user.student_id} and was in the ${user.cohort} cohort`);
+//   })
+// }).catch(err => console.error('query error', err.stack));
+// -------------------------------------------------------------------------------------------
 
 const getUserWithEmail = function(email) {
-  return 
-}
+  return pool
+  .query(`SELECT * FROM users
+  WHERE email = $1
+  `,
+  [email])
+.then(res => 
+  res.rows[0])
+.catch((err) => {
+  console.log(err.message);
+});
+};
+
 exports.getUserWithEmail = getUserWithEmail;
 
 /**
@@ -65,6 +73,8 @@ const addUser =  function(user) {
 }
 exports.addUser = addUser;
 
+// -------------------------------------------------------------------------------------------
+
 /// Reservations
 
 /**
@@ -77,6 +87,8 @@ const getAllReservations = function(guest_id, limit = 10) {
 }
 exports.getAllReservations = getAllReservations;
 
+// -------------------------------------------------------------------------------------------
+
 /// Properties
 
 /**
@@ -85,15 +97,6 @@ exports.getAllReservations = getAllReservations;
  * @param {*} limit The number of results to return.
  * @return {Promise<[{}]>}  A promise to the properties.
  */
-// const getAllProperties = function(options, limit = 10) {
-//   const limitedProperties = {};
-//   for (let i = 1; i <= limit; i++) {
-//     limitedProperties[i] = properties[i];
-//   }
-//   return Promise.resolve(limitedProperties);
-// }
-
-// -------------------------------------------------------------------------------------------
 
 const getAllProperties = (options, limit = 10) => {
 
