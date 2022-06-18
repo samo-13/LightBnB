@@ -94,7 +94,7 @@ const getAllProperties = (options, limit = 10) => {
 
   pool
     .query(
-      `SELECT * properties FROM properties
+      `SELECT * FROM properties
       LIMIT $1
       `,
       [limit])
