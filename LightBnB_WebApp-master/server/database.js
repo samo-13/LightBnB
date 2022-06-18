@@ -34,6 +34,9 @@ pool.connect();
 // }).catch(err => console.error('query error', err.stack));
 // -------------------------------------------------------------------------------------------
 
+// Accepts an email address and will return a promise.
+// The promise should resolve with a user object with the given email address, or null if that user does not exist.
+
 const getUserWithEmail = function(email) {
   return pool
   .query(`SELECT * FROM users
@@ -54,9 +57,21 @@ exports.getUserWithEmail = getUserWithEmail;
  * @param {string} id The id of the user.
  * @return {Promise<{}>} A promise to the user.
  */
+
+// Same as getUserWithEmail 
+
 const getUserWithId = function(id) {
-  return Promise.resolve(users[id]);
-}
+  return pool
+  .query(`SELECT * FROM users
+  WHERE id = $1
+  `,
+  [id])
+.then(res => 
+  res.rows[0])
+.catch((err) => {
+  console.log(err.message);
+});
+};
 exports.getUserWithId = getUserWithId;
 
 
