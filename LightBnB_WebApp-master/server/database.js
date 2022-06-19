@@ -169,26 +169,40 @@ const getAllProperties = function (options, limit = 10) {
     // doesn't work for search - needed for 'My Listings'
   if (options.owner_id) {
     queryParams.push(`${options.owner_id}`)
-    queryString += `WHERE properties.owner_id = $${queryParams.length}`;
+    if (queryParams.length <= 1) {
+      queryString += `WHERE properties.owner_id = $${queryParams.length}`;
+    } else {
+      queryString += `AND properties.owner_id = $${queryParams.length}`;
+    }
   }
 
   // database stores amounts in cents, not dollars (see 00)
   if (options.minimum_price_per_night) {
     queryParams.push(`${options.minimum_price_per_night}00`)
-    queryString += `WHERE properties.cost_per_night >= $${queryParams.length}`;
+    if (queryParams.length <= 1) {
+      queryString += `WHERE properties.cost_per_night >= $${queryParams.length}`;
+    } else {
+      queryString += `AND properties.cost_per_night >= $${queryParams.length}`;
+    }
   }
 
   if (options.maximum_price_per_night) {
     queryParams.push(`${options.maximum_price_per_night}00`)
-    queryString += `WHERE properties.cost_per_night <= $${queryParams.length}`;
+    if (queryParams.length <= 1) {
+      queryString += `WHERE properties.cost_per_night <= $${queryParams.length}`;
+    } else {
+      queryString += `AND properties.cost_per_night <= $${queryParams.length}`;
+    }
   }
 
   if (options.minimum_rating) {
     queryParams.push(`${options.minimum_rating}`)
-    queryString += `WHERE property_reviews.rating >= $${queryParams.length}`;
+    if (queryParams.length <= 1) {
+      queryString += `WHERE property_reviews.rating >= $${queryParams.length}`;
+    } else {
+      queryString += `AND property_reviews.rating >= $${queryParams.length}`;
+    }
   }
-
-
 
   // 4
   queryParams.push(limit);
