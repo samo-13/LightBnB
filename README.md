@@ -1,23 +1,25 @@
 # LightBnB
 
-Lighthouse BnB is an app that will revolutionize the travel industry. It will allow homeowners to rent out their homes to people on vacation, creating an alternative to hotels and bed and breakfasts...There’s nothing else like it! Users can view property information, book reservations, view their reservations, and write reviews. We'll be creating the first ever application to do something like this and we will call it LighthouseBnB.
+Lighthouse BnB is an app that will revolutionize the travel industry. It allows homeowners to rent out their homes to people on vacation, creating an alternative to hotels and bed and breakfasts...There’s nothing else like it! 
+
+Users can view property information, book reservations, view their reservations, and write reviews. We'll be creating the first ever application to do something like this and we will call it LighthouseBnB.
 
 This project consisted of designing a database and using server-side JavaScript to display the information from queries to web pages. 
 Knowledge of complex SQL queries, database and ERD (entity relationship diagram) design was used to integrate the database with a Node backend.
 
 ## Final Product
 
-!["Login Page"](https://github.com/samo-13/LightBnB/blob/master/docs/login-form.png)
 ### Login form
+!["Login Page"](https://github.com/samo-13/LightBnB/blob/master/docs/login-form.png)
 
-!["Logged in user"](https://github.com/samo-13/LightBnB/blob/master/docs/listings.png)
 ### Logged in as user reservations page
+!["Logged in user"](https://github.com/samo-13/LightBnB/blob/master/docs/listings.png)
 
-!["Search form"](https://github.com/samo-13/LightBnB/blob/master/docs/search-form.png)
 ### Search form
+!["Search form"](https://github.com/samo-13/LightBnB/blob/master/docs/search-form.png)
 
-!["Example search results"](https://github.com/samo-13/LightBnB/blob/master/docs/search-results.png)
 ### Example search results
+!["Example search results"](https://github.com/samo-13/LightBnB/blob/master/docs/search-results.png)
 
 ## Project Structure
 
@@ -69,3 +71,7 @@ LightBnB_WebApp-master
 - "express": "^4.17.1",
 - "nodemon": "^1.19.1",
 - "pg": "^8.7.3"
+
+## Instructions
+- Type 'npm run local' in your terminal
+- Navigate tp [localhost/3000 ](http://localhost:3000/)
