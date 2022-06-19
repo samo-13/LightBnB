@@ -4,6 +4,7 @@ const properties = require('./json/properties.json');
 const users = require('./json/users.json');
 const { Pool } = require('pg');
 const { paramsHaveRequestBody } = require('request/lib/helpers');
+const query = require('express/lib/middleware/query');
 
 // Using a Pool instead of Client is the preferred way to query with node-postgres. A Pool will manage multiple client connections for us which we don't really need to worry about right now. Just know that either could be used, but Pool is preferred.
 
@@ -164,14 +165,19 @@ const getAllProperties = function (options, limit = 10) {
     queryString += `WHERE city LIKE $${queryParams.length}`;
   }
 
-    // if an owner_id is passed in, only return properties belonging to that owner.
+    // if an owner_id is passed in, only return properties belonging to that owner
     // doesn't work for search - needed for 'My Listings'
   if (options.owner_id) {
     queryParams.push(`${options.owner_id}`)
     queryString += `WHERE properties.owner_id = $${queryParams.length}`;
   }
 
-  // if (options.minimum_price_per_night)
+  // database stores amounts in cents, not dollars (see 00)
+  if (options.minimum_price_per_night) {
+    queryParams.push(`${options.minimum_price_per_night}00`)
+    queryString += `WHERE properties.cost_per_night <= $${queryParams.length}`;
+  }
+
 
   // if (options.maximum_price_per_night)
 
