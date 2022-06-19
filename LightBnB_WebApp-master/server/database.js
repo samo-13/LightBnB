@@ -178,8 +178,11 @@ const getAllProperties = function (options, limit = 10) {
     queryString += `WHERE properties.cost_per_night <= $${queryParams.length}`;
   }
 
+  if (options.maximum_price_per_night) {
+    queryParams.push(`${options.maximum_price_per_night}00`)
+    queryString += `WHERE properties.cost_per_night <= $${queryParams.length}`;
+  }
 
-  // if (options.maximum_price_per_night)
 
   // if (options.minimum_rating)
 
