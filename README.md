@@ -5,6 +5,20 @@ Lighthouse BnB is an app that will revolutionize the travel industry. It will al
 This project consisted of designing a database and using server-side JavaScript to display the information from queries to web pages. 
 Knowledge of complex SQL queries, database and ERD (entity relationship diagram) design was used to integrate the database with a Node backend.
 
+## Final Product
+
+!["Login Page"](https://github.com/samo-13/LightBnB/blob/master/docs/login-form.png)
+### Login form
+
+!["Logged in user"](https://github.com/samo-13/LightBnB/blob/master/docs/listings.png)
+### Logged in as user reservations page
+
+!["Search form"](https://github.com/samo-13/LightBnB/blob/master/docs/search-form.png)
+### Search form
+
+!["Example search results"](https://github.com/samo-13/LightBnB/blob/master/docs/search-results.png)
+### Example search results
+
 ## Project Structure
 
 ```
@@ -47,3 +61,11 @@ LightBnB_WebApp-master
   * `apiRoutes.js` and `userRoutes.js` are responsible for any HTTP requests to `/users/something` or `/api/something`. 
   * `json` is a directory that contains a bunch of dummy data in `.json` files.
   * `database.js` is responsible for all queries to the database. It doesn't currently connect to any database, all it does is return data from `.json` files.
+
+## Dependencies
+- "bcrypt": "^3.0.8",
+- "body-parser": "^1.19.0",
+- "cookie-session": "^1.3.3",
+- "express": "^4.17.1",
+- "nodemon": "^1.19.1",
+- "pg": "^8.7.3"
