@@ -16,7 +16,6 @@ const pool = new Pool({
 });
 
 pool.connect();
-// pool.query(`SELECT title FROM properties LIMIT 10;`).then(response => {console.log(response)})
 
 // -------------------------------------------------------------------------------------------
 
@@ -27,16 +26,6 @@ pool.connect();
  * @param {String} email The email of the user.
  * @return {Promise<{}>} A promise to the user.
  */
-
-// -------------------------------------------------------------------------------------------
-// REFERENCE CODE FROM BOOTCAMPX
-// pool.query(query, values)
-// .then(res => {
-//   res.rows.forEach(user => {
-//     console.log(`${user.name} has an id of ${user.student_id} and was in the ${user.cohort} cohort`);
-//   })
-// }).catch(err => console.error('query error', err.stack));
-// -------------------------------------------------------------------------------------------
 
 // Accepts an email address and will return a promise.
 // The promise should resolve with a user object with the given email address, or null if that user does not exist.
@@ -61,8 +50,6 @@ exports.getUserWithEmail = getUserWithEmail;
  * @param {string} id The id of the user.
  * @return {Promise<{}>} A promise to the user.
  */
-
-// Same as getUserWithEmail
 
 const getUserWithId = function(id) {
   return pool
@@ -89,9 +76,6 @@ exports.getUserWithId = getUserWithId;
 //  https://www.w3schools.com/sql/sql_insert.asp
 //  It will return a promise that resolves with the new user object. This object should contain the user's id after it's been added to the database.
 //  Add RETURNING *; to the end of an INSERT query to return the objects that were inserted. This is handy when you need the auto generated id of an object you've just added to the database.
-
-// INSERT INTO table_name (column1, column2, column3, ...)
-// VALUES (value1, value2, value3, ...);
 
 const addUser =  function(user) {
   return pool
@@ -133,7 +117,7 @@ const getAllReservations = function(guest_id, limit = 10) {
       res.rows)
     .catch((err) => {
       console.log(err.message);
-  });
+    });
 };
 exports.getAllReservations = getAllReservations;
 
@@ -148,27 +132,25 @@ exports.getAllReservations = getAllReservations;
  * @return {Promise<[{}]>}  A promise to the properties.
  */
 
-const getAllProperties = function (options, limit = 10) {
-  // 1
+const getAllProperties = function(options, limit = 10) {
+  
   const queryParams = [];
-  // 2
+  
   let queryString = `
   SELECT properties.*, avg(property_reviews.rating) as average_rating
   FROM properties
   JOIN property_reviews ON properties.id = property_id
   `;
 
-  // 3
-
   if (options.city) {
     queryParams.push(`%${options.city}%`);
     queryString += `WHERE city LIKE $${queryParams.length}`;
   }
 
-    // if an owner_id is passed in, only return properties belonging to that owner
-    // doesn't work for search - needed for 'My Listings'
+  // if an owner_id is passed in, only return properties belonging to that owner
+  // doesn't work for search - needed for 'My Listings'
   if (options.owner_id) {
-    queryParams.push(`${options.owner_id}`)
+    queryParams.push(`${options.owner_id}`);
     if (queryParams.length <= 1) {
       queryString += `WHERE properties.owner_id = $${queryParams.length}`;
     } else {
@@ -176,9 +158,8 @@ const getAllProperties = function (options, limit = 10) {
     }
   }
 
-  // database stores amounts in cents, not dollars (see 00)
   if (options.minimum_price_per_night) {
-    queryParams.push(`${options.minimum_price_per_night}00`)
+    queryParams.push(`${options.minimum_price_per_night}00`);   // database stores amounts in cents, not dollars (see 00)
     if (queryParams.length <= 1) {
       queryString += `WHERE properties.cost_per_night >= $${queryParams.length}`;
     } else {
@@ -187,7 +168,7 @@ const getAllProperties = function (options, limit = 10) {
   }
 
   if (options.maximum_price_per_night) {
-    queryParams.push(`${options.maximum_price_per_night}00`)
+    queryParams.push(`${options.maximum_price_per_night}00`);
     if (queryParams.length <= 1) {
       queryString += `WHERE properties.cost_per_night <= $${queryParams.length}`;
     } else {
@@ -196,7 +177,7 @@ const getAllProperties = function (options, limit = 10) {
   }
 
   if (options.minimum_rating) {
-    queryParams.push(`${options.minimum_rating}`)
+    queryParams.push(`${options.minimum_rating}`);
     if (queryParams.length <= 1) {
       queryString += `WHERE property_reviews.rating >= $${queryParams.length}`;
     } else {
@@ -204,7 +185,6 @@ const getAllProperties = function (options, limit = 10) {
     }
   }
 
-  // 4
   queryParams.push(limit);
   queryString += `
   GROUP BY properties.id
@@ -212,15 +192,13 @@ const getAllProperties = function (options, limit = 10) {
   LIMIT $${queryParams.length};
   `;
 
-  // 5
   console.log(queryString, queryParams);
 
-  // 6
   return pool.query(queryString, queryParams)
-  .then((res) => res.rows)
-  .catch((err) => {
-    console.log(err.message);
-  });
+    .then((res) => res.rows)
+    .catch((err) => {
+      console.log(err.message);
+    });
 };
 exports.getAllProperties = getAllProperties;
 
@@ -234,7 +212,7 @@ exports.getAllProperties = getAllProperties;
 
 const addProperty = function(property) {
   return pool
-  .query(`
+    .query(`
   INSERT INTO properties (
     owner_id,
     title,
@@ -253,10 +231,10 @@ const addProperty = function(property) {
   VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
   RETURNING *;
 `, [property.owner_id, property.title, property.description, property.thumbnail_photo_url, property.cover_photo_url, property.cost_per_night, property.street, property.city, property.province, property.post_code, property.country, property.parking_spaces, property.number_of_bathrooms, property.number_of_bedrooms])
-  .then(res =>
-    res.rows[0])
-  .catch((err) => {
-    console.log(err.message);
-  });
+    .then(res =>
+      res.rows[0])
+    .catch((err) => {
+      console.log(err.message);
+    });
 };
 exports.addProperty = addProperty;
