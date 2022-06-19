@@ -175,7 +175,7 @@ const getAllProperties = function (options, limit = 10) {
   // database stores amounts in cents, not dollars (see 00)
   if (options.minimum_price_per_night) {
     queryParams.push(`${options.minimum_price_per_night}00`)
-    queryString += `WHERE properties.cost_per_night <= $${queryParams.length}`;
+    queryString += `WHERE properties.cost_per_night >= $${queryParams.length}`;
   }
 
   if (options.maximum_price_per_night) {
@@ -183,8 +183,10 @@ const getAllProperties = function (options, limit = 10) {
     queryString += `WHERE properties.cost_per_night <= $${queryParams.length}`;
   }
 
-
-  // if (options.minimum_rating)
+  if (options.minimum_rating) {
+    queryParams.push(`${options.minimum_rating}`)
+    queryString += `WHERE property_reviews.rating >= $${queryParams.length}`;
+  }
 
 
 
