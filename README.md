@@ -72,6 +72,7 @@ LightBnB_WebApp-master
 - "nodemon": "^1.19.1",
 - "pg": "^8.7.3"
 
-## Instructions
+## Instructions to run
+- Navigate to LightBnB_WebApp-master directory
 - Type 'npm run local' in your terminal
 - Navigate tp [localhost/3000 ](http://localhost:3000/)

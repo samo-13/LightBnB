@@ -21,13 +21,11 @@ CREATE TABLE properties (
   parking_spaces INTEGER,
   number_of_bathrooms INTEGER,
   number_of_bedrooms INTEGER,
-
   country VARCHAR(255) NOT NULL,
   street VARCHAR(255) NOT NULL,
   city VARCHAR(255) NOT NULL,
   province VARCHAR(255) NOT NULL,
   post_code VARCHAR(255) NOT NULL,
-
   active BOOLEAN NOT NULL DEFAULT TRUE
 );
 
